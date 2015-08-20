@@ -18,5 +18,3 @@ fi
 unset TRANSMISION_ADMIN_PASS
 
 exec $TRANSMISSION -f --no-portmap --config-dir $CONFIG_DIR --log-info 
-
-

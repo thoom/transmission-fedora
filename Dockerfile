@@ -1,29 +1,23 @@
-FROM elventear/supervisord:latest
+FROM fedora:latest
 
-MAINTAINER Pepe Barbe <dev@antropoide.net>
+MAINTAINER Eduardo Minguez <edu@linux.com>
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y software-properties-common 
-
-RUN add-apt-repository -y ppa:transmissionbt/ppa && \
-    apt-get update && \
-    apt-get install -y transmission-daemon
+RUN dnf clean all && \
+    dnf update -y && \
+    dnf install -y transmission-daemon && \
+    dnf clean all
 
 ADD files/transmission-daemon /etc/transmission-daemon
 ADD files/run_transmission.sh /run_transmission.sh
 
-RUN mkdir -p /var/lib/transmission-daemon/incomplete && \
-    mkdir -p /var/lib/transmission-daemon/downloads && \
-    chown -R debian-transmission: /var/lib/transmission-daemon && \
-    chown -R debian-transmission: /etc/transmission-daemon    
+RUN mkdir -p /var/lib/transmission/{incomplete,downloads,watch} && \
+    chown -R transmission:transmission /var/lib/transmission && \
+    chown -R transmission:transmission /etc/transmission-daemon    
 
-VOLUME ["/var/lib/transmission-daemon/downloads"]
-VOLUME ["/var/lib/transmission-daemon/incomplete"]
+VOLUME ["/var/lib/transmission/downloads", "/var/lib/transmission/incomplete", "/var/lib/transmission/watch"]
 
-EXPOSE 9091
-EXPOSE 12345
+EXPOSE 9091 12345
 
-USER debian-transmission
+USER transmission
 
 CMD ["/run_transmission.sh"]
