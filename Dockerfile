@@ -10,6 +10,8 @@ RUN dnf clean all && \
 ADD files/transmission-daemon /etc/transmission-daemon
 ADD files/run_transmission.sh /run_transmission.sh
 
+RUN useradd -u 1000 -g 1000 transmission
+
 RUN mkdir -p /var/lib/transmission/{incomplete,downloads,watch} && \
     chown -R transmission:transmission /var/lib/transmission && \
     chown -R transmission:transmission /etc/transmission-daemon    
