@@ -9,6 +9,7 @@ RUN dnf clean all && \
 
 ADD files/transmission-daemon /etc/transmission-daemon
 ADD files/run_transmission.sh /run_transmission.sh
+ADD files/transmission-umask.sh /etc/profile.d/transmission-umask.sh
 
 RUN useradd -u 1000 -g 1000 transmission
 
